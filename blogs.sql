@@ -1,5 +1,8 @@
 use blogs;
 
+create user 'blogsapp'@'localhost' identified by 'root';
+GRANT ALL ON blogs.* TO 'blogsapp'@'localhost';
+
 drop table blogs;
 create table blogs (
 	id int primary key auto_increment,
@@ -10,6 +13,8 @@ create table blogs (
     _updated datetime default current_timestamp on update current_timestamp
 );
 select * from blogs;
+update blogs set content = "The World Sucks" where id = 1;
+insert into blogs (title, content, authorid) values ("Test One", "<h1>The World Sucks</h1>", 1);
 
 drop table authors;
 create table authors (
@@ -19,6 +24,12 @@ create table authors (
     _created datetime default current_timestamp
 );
 select * from authors;
+insert into authors (name, email) values
+("Mace", "lucasmace4130@gmail.com"),
+("Maria", "ilikedance@gmail.com"),
+("Tony", "ipicklocks@gmail.com"),
+("Billy", "ifixshocks@gmail.com")
+;
 
 drop table tags;
 create table tags (
@@ -27,6 +38,8 @@ create table tags (
     _created datetime default current_timestamp
 );
 select * from tags;
+insert into tags (name) values
+("Bikes"), ("Locks"), ("Dance"), ("Coffee"), ("Code"), ("Satan"), ("Tools"), ("Punk Rock");
 
 drop table blogtags;
 create table blogtags (

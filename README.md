@@ -1,17 +1,57 @@
-# Barebones React/TypeScript/Express/Sass Boilerplate
-This project is a starting point for a TypeScript based React app that also has a local API server using express.
+Your Personal Blog
+The purpose of this lab is to make a your own personal blog .. full stack! You'll use everything you've learned from the Database lectures to make a schema, connect it to your Express server, write REST API Endpoints to get your data, and display it all using React. Let's crush it!
 
-There are 2 different Webpack configurations. One for the server and one for the client.
+Steps
+Database
+Create a new database named blogs.
+Create the following tables:
+Blogs (
+   id
+   title
+   content
+   authorid
+   _created
+) 
 
-## Server
-The server build process compiles the TypeScript files found in `/src/server` into a single bundled JavaScript file located in the `/dist` directory.
+Authors (
+   id
+   name
+   email
+   _created
+)
 
-## Client
-The client build process compiles the React app located in `/src/client` into a bundled located at `/public/js/app.js`.
+Tags (
+   id
+   name
+   _created
+) 
 
-The client configuration will also build the Sass files found at `/src/client/scss`. The `index.tsx` imports the `app.scss` file which already includes an import for Bootstrap.
-
-## Running the project
-In order to run the server, use `npm run dev`, and the server will start on port 3000 (http://localhost:3000). 
-
-Webpack will watch the files. Once you save a file, you can refresh your browser to ensure you got the updated client files. If you only change server files, you *shouldn't* need to refresh.
+BlogTags (
+   blogid 
+   tagid
+)
+Create a stored procedure named spBlogTags to pull back the tag of a blog.
+Must have one parameter: blogid
+Hint: You only need to join BlogTags and Tags
+Create a new user with privileges for your Blogs database
+Express API
+Install mysql and its typings into your project
+Make sure your project runs via npm run dev and going to localhost:3000/
+Set up your database config, and don't forget to include it in your .gitignore!
+Use your config object to connect to your mysql database.
+Write your DB queries and REST API Endpoints to:
+GET all Blogs
+GET one Blog
+POST a new Blog, with at least one tag
+Hint: Your blog insert will result in an id response from mysql, use that to insert your blog id and tag id into your blogtags table!
+PUT to edit a Blog
+DELETE to delete a blog
+GET all Blogtags for a blogid
+React Frontend
+Create a component to display all Blogs
+Create a component to show one Blog
+Add a button that links to another component to edit this Blog
+The Edit Blog component should allow you to save any edits to your Blog, or delete that Blog
+Create a component to add a new Blog post
+Hint: Use a select element with options to handle adding a tag to your new Blog post
+The all Blogs component should display previews of the blog posts that a user can click on, which would navigate to the single Blog component that would display all the information of the Blog post. Don't forget to use your blog tags at least on the single Blog component!
