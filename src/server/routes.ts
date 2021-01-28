@@ -29,13 +29,12 @@ router.post('/api/blogs/new', async (req, res) => {
     }
 });
 
-router.post('/api/tags', async (req, res) => {
+router.post('/api/blogtags', async (req, res) => {
     try {
-        let authorid: number = Number(req.body.authorid);
-        let title: string = req.body.title;
-        let content: string = req.body.content;
+        let blogId: number = Number(req.body.blogId);
+        let tagId: number = req.body.tagId;
         
-        res.json(await db.blogs.newBlog(authorid, title, content));
+        res.json(await db.blogs.blogTag(blogId, tagId));
     } catch (e) {
         console.log(e);
         res.sendStatus(500);

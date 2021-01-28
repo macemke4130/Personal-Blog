@@ -7,10 +7,10 @@ const NewBlog = (props: NewBlogProps) => {
     const [allAuthors, setAllAuthros] = useState<Array<A>>([]);
     const [allTags, setAllTags] = useState<Array<T>>([]);
 
-    const [theTag, setTheTag] = useState<number>(0);
     const [theAuthor, setTheAuthor] = useState<number>(0);
     const [theTitle, setTheTitle] = useState<string>("Blog Title");
     const [theBlog, setTheBlog] = useState<string>("Blog Content");
+    const [theTag, setTheTag] = useState<number>(0);
 
     const fetchAllAuthors = async () => {
         try {
@@ -33,24 +33,41 @@ const NewBlog = (props: NewBlogProps) => {
     }
 
     const postNewBlog = async () => {
-        let blogObject: B = {
-            authorid: theAuthor,
-            title: theTitle,
-            content: theBlog
-        }
-
-        let myMethod = {
-            method: 'POST',
-            headers: { 'Content-type': 'application/json; charset=UTF-8' },
-            body: JSON.stringify(blogObject)
-        }
         try {
+            let blogObject: B = {
+                authorid: theAuthor,
+                title: theTitle,
+                content: theBlog
+            }
+
+            let myMethod = {
+                method: 'POST',
+                headers: { 'Content-type': 'application/json; charset=UTF-8' },
+                body: JSON.stringify(blogObject)
+            }
             let r = await fetch("/api/blogs/new/", myMethod);
             let newId = await r.json();
-            let insertId = newId.insertId;
-            console.log(insertId);
+            let insertId: number = newId.insertId;
+            await postBlogTag(insertId);
         } catch (e) {
             console.log("Error Posting New Blog: " + e);
+        }
+    }
+
+    const postBlogTag = async (newId: number) => {
+        try {
+            let blogTagObject: BT = {
+                blogId: newId,
+                tagId: theTag
+            }
+            let myMethod = {
+                method: 'POST',
+                headers: { 'Content-type': 'application/json; charset=UTF-8' },
+                body: JSON.stringify(blogTagObject)
+            }
+            let r = await fetch("/api/blogtags/", myMethod);
+        } catch (e) {
+            console.log("Error Posting Blog Tag: " + e);
         }
     }
 
@@ -74,6 +91,7 @@ const NewBlog = (props: NewBlogProps) => {
         console.log("The Author: " + theAuthor);
         console.log("The Title: " + theTitle);
         console.log("The Blog Text: " + theBlog);
+        console.log("The Blog Tag: " + theTag);
     }
 
     useEffect(() => {
@@ -121,6 +139,11 @@ interface B { // B is for Blog --
 interface T { // T is for Tag --
     id: number,
     name: string
+}
+
+interface BT { // BT is for Blog Tag --
+    blogId: number,
+    tagId: number
 }
 
 export default NewBlog;
