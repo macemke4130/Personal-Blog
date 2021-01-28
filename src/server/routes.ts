@@ -3,10 +3,7 @@ import db from './db';
 
 const router = express.Router();
 
-router.get('/api/hello', (req, res, next) => {
-    res.json('World');
-});
-
+// Get All Blogs --
 router.get('/api/blogs', async (req, res) => {
     try {
         res.json(await db.blogs.all());
@@ -16,6 +13,7 @@ router.get('/api/blogs', async (req, res) => {
     }
 });
 
+// Post to the Blogs table --
 router.post('/api/blogs/new', async (req, res) => {
     try {
         let authorid: number = Number(req.body.authorid);
@@ -29,6 +27,7 @@ router.post('/api/blogs/new', async (req, res) => {
     }
 });
 
+// Post to the BlogTags table --
 router.post('/api/blogtags', async (req, res) => {
     try {
         let blogId: number = Number(req.body.blogId);
@@ -41,6 +40,7 @@ router.post('/api/blogtags', async (req, res) => {
     }
 });
 
+// Get One Blog Post --
 router.get('/api/blogs/:id', async (req, res) => {
     let id: number = Number(req.params.id);
     try {
@@ -51,6 +51,7 @@ router.get('/api/blogs/:id', async (req, res) => {
     }
 });
 
+// Get All Authors --
 router.get('/api/authors', async (req, res) => {
     try {
         res.json(await db.blogs.authors());
@@ -60,6 +61,7 @@ router.get('/api/authors', async (req, res) => {
     }
 });
 
+// Get One Author --
 router.get('/api/blogs/authors/:id', async (req, res) => {
     let id: number = Number(req.params.id);
     try {
@@ -70,6 +72,18 @@ router.get('/api/blogs/authors/:id', async (req, res) => {
     }
 });
 
+// Get One BlogTag --
+router.get('/api/blogtag/:id', async (req, res) => {
+    let id: number = Number(req.params.id);
+    try {
+        res.json((await db.blogs.theTag(id))[0]);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+// Get All Tags --
 router.get('/api/tags', async (req, res) => {
     try {
         res.json(await db.blogs.tags());

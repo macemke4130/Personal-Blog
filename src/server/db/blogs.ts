@@ -7,7 +7,8 @@ const tags = async () => Query("Select id, name from tags");
 const writer = async (id: number) => Query("Select name from authors where id = ?", [id]);
 const newBlog = async (authorid: number, title: string, content: string, ) => Query("Insert into blogs (authorid, title, content) values (?, ?, ?)", [authorid, title, content]);
 const blogTag = async (blogid: number, tagid: number) => Query("Insert into blogtags (blogid, tagid) values (?, ?)", [blogid, tagid]);
-
+const destroyBlog = async (id: number) => Query("Delete from blogs where id = ?", [id]);
+const theTag = async (id: number) => Query("Select tagid from blogtags where blogid = ?", [id]);
 
 export default {
     all,
@@ -16,5 +17,7 @@ export default {
     writer,
     tags,
     newBlog,
-    blogTag
+    blogTag,
+    destroyBlog,
+    theTag
 }
