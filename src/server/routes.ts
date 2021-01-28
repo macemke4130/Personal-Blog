@@ -93,4 +93,15 @@ router.get('/api/tags', async (req, res) => {
     }
 });
 
+// Delete One Blog Post --
+router.delete('/api/blogs/delete/:id', async (req, res) => {
+    let id: number = Number(req.params.id);
+    try {
+        res.json(await db.blogs.destroyBlog(id));
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
 export default router;

@@ -47,7 +47,7 @@ const Admin = (props: AdminProps) => {
                 headers: { 'Content-type': 'application/json; charset=UTF-8' },
                 body: JSON.stringify(blogObject)
             }
-            let r = await fetch("/api/blogs/new/", myMethod);
+            let r = await fetch("/api/blogs/new/", myMethod); // Change to PUT call --
             let newId = await r.json();
             let insertId: number = newId.insertId;
             await postBlogTag(insertId);
@@ -77,6 +77,8 @@ const Admin = (props: AdminProps) => {
         try {
             let r = await fetch("/api/blogs/" + id);
             let thisBlogJson = await r.json();
+
+            // Populates the Inputs with the default values --
             setTheAuthor(thisBlogJson.authorid);
             setTheTitle(thisBlogJson.title);
             setTheBlog(thisBlogJson.content);
@@ -89,9 +91,25 @@ const Admin = (props: AdminProps) => {
         try {
             let r = await fetch("/api/blogtag/" + id);
             let theTagJson = await r.json();
+            
+            // Populates the Tags <select> with the default value --
             setTheTag(theTagJson.tagid);
         } catch (e) {
             console.log("Error Fetching This Tag: " + e);
+        }
+    }
+
+    const destroyBlogCatch = () => {
+        destroyBlogConfirm();
+    }
+
+    const destroyBlogConfirm = async () => {
+        try {
+            let myMethod = { method: 'DELETE' };
+            let r = await fetch("/api/blogs/delete/" + id, myMethod);
+            console.log("Deleted?");
+        } catch (e) {
+            console.log("Error Destorying Blog: " + e);
         }
     }
 
@@ -144,6 +162,7 @@ const Admin = (props: AdminProps) => {
                     ))}
                 </select>
                 <button onClick={postNewBlog}>Post Blog</button>
+                <button onClick={destroyBlogCatch}>Delete Blog</button>
             </div>
         </>
     );
