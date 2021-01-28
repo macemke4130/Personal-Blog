@@ -17,11 +17,25 @@ router.get('/api/blogs', async (req, res) => {
 });
 
 router.post('/api/blogs/new', async (req, res) => {
-    let title: string = req.params.title;
-    let content: string = req.params.content;
-    let authorid: number = Number(req.params.authorid);
     try {
-        res.json(await db.blogs.newBlog(title, content, authorid));
+        let authorid: number = Number(req.body.authorid);
+        let title: string = req.body.title;
+        let content: string = req.body.content;
+        
+        res.json(await db.blogs.newBlog(authorid, title, content));
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+router.post('/api/tags', async (req, res) => {
+    try {
+        let authorid: number = Number(req.body.authorid);
+        let title: string = req.body.title;
+        let content: string = req.body.content;
+        
+        res.json(await db.blogs.newBlog(authorid, title, content));
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
