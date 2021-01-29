@@ -13,6 +13,31 @@ const Admin = (props: AdminProps) => {
     const [theBlog, setTheBlog] = useState<string>("");
     const [theTag, setTheTag] = useState<number>(0);
 
+    const fetchThisBlog = async () => {
+        try {
+            let r = await fetch("/api/blogs/" + id);
+            let thisBlogJson = await r.json();
+            // Populates the Inputs with the default values --
+            setTheAuthor(thisBlogJson.authorid);
+            setTheTitle(thisBlogJson.title);
+            setTheBlog(thisBlogJson.content);
+        } catch (e) {
+            console.log("Error Fetching Single Blog: " + e);
+        }
+    }
+
+    const fetchThisTag = async () => {
+        try {
+            let r = await fetch("/api/blogtag/" + id);
+            let theTagJson = await r.json();
+
+            // Populates the Tags <select> with the default value --
+            setTheTag(theTagJson.tagid);
+        } catch (e) {
+            console.log("Error Fetching This Tag: " + e);
+        }
+    }
+
     const fetchAllAuthors = async () => {
         try {
             let r = await fetch("/api/authors/");
@@ -75,33 +100,8 @@ const Admin = (props: AdminProps) => {
         }
     }
 
-    const fetchThisBlog = async () => {
-        try {
-            let r = await fetch("/api/blogs/" + id);
-            let thisBlogJson = await r.json();
-
-            // Populates the Inputs with the default values --
-            setTheAuthor(thisBlogJson.authorid);
-            setTheTitle(thisBlogJson.title);
-            setTheBlog(thisBlogJson.content);
-        } catch (e) {
-            console.log("Error Fetching Single Blog: " + e);
-        }
-    }
-
-    const fetchThisTag = async () => {
-        try {
-            let r = await fetch("/api/blogtag/" + id);
-            let theTagJson = await r.json();
-
-            // Populates the Tags <select> with the default value --
-            setTheTag(theTagJson.tagid);
-        } catch (e) {
-            console.log("Error Fetching This Tag: " + e);
-        }
-    }
-
     const destroyBlogCatch = () => {
+        // Verifications here --
         destroyBlogConfirm();
     }
 

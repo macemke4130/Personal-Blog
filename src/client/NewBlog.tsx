@@ -124,6 +124,7 @@ const NewBlog = (props: NewBlogProps) => {
                     </select>
 
                     <button onClick={postNewBlog}>Post Blog</button>
+                    <Link to="/"><button>Cancel</button></Link>
                 </div>
             </div>
         </>

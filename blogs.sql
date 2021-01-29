@@ -49,3 +49,5 @@ create table blogtags (
 		foreign key (tagid) references tags(id) on delete cascade
 );
 select * from blogtags;
+
+select blogs.id, blogs.title, blogs.content, blogs._created, blogs._updated, authors.name as writer from blogs inner join authors on blogs.authorid = authors.id where blogs.id = 8;

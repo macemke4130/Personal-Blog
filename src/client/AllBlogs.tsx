@@ -29,7 +29,7 @@ const AllBlogs = (props: AllBlogsProps) => {
                 {allBlogs?.map(blog => (
                     <div key={blog.id} className="col-8">
                         <div className="card shadow m-3 p-3">
-                            <Link to={"/admin/" + blog.id}><h2>{blog.title}</h2></Link>
+                            <Link to={"/blogpost/" + blog.id}><h2>{blog.title}</h2></Link>
                             <small>Written by: {blog.writer}</small>
                             <p>{blog.content}</p>
                             <small>Published <Moment format="MMMM DD, YYYY H:mm a">{blog._created}</Moment></small>

@@ -1,7 +1,7 @@
 import { Query } from './index';
 
 const all = async () => Query("select blogs.id, blogs.title, blogs.content, blogs._created, authors.name as writer from blogs inner join authors on blogs.authorid = authors.id order by id desc");
-const one = async (id: number) => Query("Select * from blogs where id = ?", [id]);
+const one = async (id: number) => Query("select blogs.id, blogs.title, blogs.content, blogs.authorid, blogs._created, blogs._updated, authors.name as writer from blogs inner join authors on blogs.authorid = authors.id where blogs.id = ?", [id]);
 const authors = async () => Query("Select id, name from authors");
 const tags = async () => Query("Select id, name from tags");
 const writer = async (id: number) => Query("Select name from authors where id = ?", [id]);
