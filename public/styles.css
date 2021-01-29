@@ -1,0 +1,48 @@
+.my-pop-up {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: black;
+    padding: 1rem;
+    width: 50vw;
+    height: 50vh;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 5px 5px 10px black;
+}
+
+.modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.width-50 {
+    width: 50%;
+}
+
+.full-width{
+    width: 100%;
+}
+
+.tall {
+    height: 100vh;
+}
+
+small {
+    font-size: 0.2rem;
+}
+
+textarea {
+    width: 100%;
+    height: 300px;
+  }

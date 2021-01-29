@@ -102,22 +102,29 @@ const NewBlog = (props: NewBlogProps) => {
     return (
         <>
             <h1>New Blog Post</h1>
-            <div className="container">
-                <select id="authors" onChange={handleAuthorChange} value={theAuthor} >
-                    <option value="0" disabled>-- Select an Author --</option>
-                    {allAuthors?.map(author => (
-                        <option key={author.id} value={author.id}>{author.name}</option>
-                    ))}
-                </select>
-                <label className="sr-only">Blog Title: </label><input type="text" placeholder={theTitle} onChange={handleTitleChange}></input>
-                <label className="sr-only">Chirp:</label><textarea placeholder={theBlog} onChange={handleBlogChange}></textarea>
-                <select id="tags" onChange={handleTagChange} value={theTag} >
-                    <option value="0" disabled>-- Select a Tag --</option>
-                    {allTags?.map(tag => (
-                        <option key={tag.id} value={tag.id}>{tag.name}</option>
-                    ))}
-                </select>
-                <button onClick={postNewBlog}>Post Blog</button>
+            <div className="container d-flex flex-column align-items-center justify-content-center">
+                <div className="col-8 d-flex flex-column align-items-center justify-content-center full-width">
+                    <select id="authors" onChange={handleAuthorChange} value={theAuthor} className="full-width m-3">
+                        <option value="0" disabled>-- Select Author --</option>
+                        {allAuthors?.map(author => (
+                            <option key={author.id} value={author.id}>{author.name}</option>
+                        ))}
+                    </select>
+                    <label className="sr-only">Blog Title</label><input type="text" className="full-width" placeholder={theTitle} onChange={handleTitleChange}></input>
+                </div>
+                <div className="p-3 full-width">
+                    <label className="sr-only">Blog Content</label><textarea placeholder={theBlog} onChange={handleBlogChange}></textarea>
+                </div>
+                <div className="d-flex justify-content-around justify-content-center full-width">
+                    <select id="tags" onChange={handleTagChange} value={theTag} className="width-50">
+                        <option value="0" disabled>-- Select a Tag --</option>
+                        {allTags?.map(tag => (
+                            <option key={tag.id} value={tag.id}>{tag.name}</option>
+                        ))}
+                    </select>
+
+                    <button onClick={postNewBlog}>Post Blog</button>
+                </div>
             </div>
         </>
     );
