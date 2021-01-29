@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import Moment from 'react-moment';
-import { isConstructorDeclaration } from 'typescript';
 
 const Admin = (props: AdminProps) => {
     const { id } = useParams<{ id: string }>();
@@ -34,7 +33,8 @@ const Admin = (props: AdminProps) => {
         }
     }
 
-    const postNewBlog = async () => {
+    const submitEdit = async () => {
+        submitTagEdit();
         try {
             let blogObject: B = {
                 authorid: theAuthor,
@@ -43,33 +43,35 @@ const Admin = (props: AdminProps) => {
             }
 
             let myMethod = {
-                method: 'POST',
+                method: 'PUT',
                 headers: { 'Content-type': 'application/json; charset=UTF-8' },
                 body: JSON.stringify(blogObject)
             }
-            let r = await fetch("/api/blogs/new/", myMethod); // Change to PUT call --
-            let newId = await r.json();
-            let insertId: number = newId.insertId;
-            await postBlogTag(insertId);
+            let r = await fetch("/api/blogs/update/" + id, myMethod)
+                .then((res) => {
+                    if (res.ok) {
+                        console.log("Call Modal.");
+                    }
+                });
         } catch (e) {
-            console.log("Error Posting New Blog: " + e);
+            console.log("Error Updating Blog: " + e);
         }
     }
 
-    const postBlogTag = async (newId: number) => {
+    const submitTagEdit = async () => {
         try {
             let blogTagObject: BT = {
-                blogId: newId,
+                blogId: Number(id),
                 tagId: theTag
             }
             let myMethod = {
-                method: 'POST',
+                method: 'PUT',
                 headers: { 'Content-type': 'application/json; charset=UTF-8' },
                 body: JSON.stringify(blogTagObject)
             }
-            let r = await fetch("/api/blogtags/", myMethod);
+            let r = await fetch("/api/blogtags/update/" + id, myMethod);
         } catch (e) {
-            console.log("Error Posting Blog Tag: " + e);
+            console.log("Error Updating Blog Tag: " + e);
         }
     }
 
@@ -91,7 +93,7 @@ const Admin = (props: AdminProps) => {
         try {
             let r = await fetch("/api/blogtag/" + id);
             let theTagJson = await r.json();
-            
+
             // Populates the Tags <select> with the default value --
             setTheTag(theTagJson.tagid);
         } catch (e) {
@@ -161,7 +163,8 @@ const Admin = (props: AdminProps) => {
                         <option key={tag.id} value={tag.id}>{tag.name}</option>
                     ))}
                 </select>
-                <button onClick={postNewBlog}>Post Blog</button>
+                <Link to="/"><button>Cancel Edit</button></Link>
+                <button onClick={submitEdit}>Submit Blog Edit</button>
                 <button onClick={destroyBlogCatch}>Delete Blog</button>
             </div>
         </>

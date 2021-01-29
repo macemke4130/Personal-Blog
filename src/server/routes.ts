@@ -104,4 +104,30 @@ router.delete('/api/blogs/delete/:id', async (req, res) => {
     }
 });
 
+// Edit One Blog Post --
+router.put('/api/blogs/update/:id', async (req, res) => {
+    let id: number = Number(req.params.id);
+    let authroid: number = Number(req.body.authorid);
+    let title: string = req.body.title;
+    let content: string = req.body.content;
+    try {
+        res.json(await db.blogs.updateBlog(id, authroid, title, content));
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+// Edit One BlogTag --
+router.put('/api/blogtags/update/:id', async (req, res) => {
+    let id: number = Number(req.params.id);
+    let tagId: number = Number(req.body.tagId);
+    try {
+        res.json(await db.blogs.updateBlogTag(id, tagId));
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
 export default router;
