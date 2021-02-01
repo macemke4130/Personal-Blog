@@ -1,16 +1,21 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
-import Moment from 'react-moment';
+import Modal, { MB, ModalProps } from "./Modal";
+
 
 const NewBlog = (props: NewBlogProps) => {
     const [allAuthors, setAllAuthros] = useState<Array<A>>([]);
     const [allTags, setAllTags] = useState<Array<T>>([]);
 
     const [theAuthor, setTheAuthor] = useState<number>(0);
-    const [theTitle, setTheTitle] = useState<string>("Blog Title");
-    const [theBlog, setTheBlog] = useState<string>("Blog Content");
+    const [theTitle, setTheTitle] = useState<string>("");
+    const [theBlog, setTheBlog] = useState<string>("");
     const [theTag, setTheTag] = useState<number>(0);
+
+    const [modalDisplay, setModalDisplay] = useState<boolean>(false);
+    const [modalMessage, setModalMessage] = useState<string>("");
+    const [modalBtns, setModalBtns] = useState<MB>({ close: true, home: false });
 
     const fetchAllAuthors = async () => {
         try {
@@ -32,6 +37,28 @@ const NewBlog = (props: NewBlogProps) => {
         }
     }
 
+    const verify = () => {
+        if (theAuthor === 0) {
+            setModalDisplay(true);
+            setModalMessage("Please select an Author.");
+            setModalBtns({ home: false, close: true, destroy: false });
+        } else if (theTitle === "" || theTitle === " ") {
+            setModalDisplay(true);
+            setModalMessage("Please enter a Title.");
+            setModalBtns({ home: false, close: true, destroy: false });
+        } else if (theBlog === "" || theBlog === " ") {
+            setModalDisplay(true);
+            setModalMessage("Please enter a Blog.");
+            setModalBtns({ home: false, close: true, destroy: false });
+        } else if (theTag === 0) {
+            setModalDisplay(true);
+            setModalMessage("Please select a tag.");
+            setModalBtns({ home: false, close: true, destroy: false });
+        } else {
+            postNewBlog();
+        }
+    };
+
     const postNewBlog = async () => {
         try {
             let blogObject: B = {
@@ -49,6 +76,10 @@ const NewBlog = (props: NewBlogProps) => {
             let newId = await r.json();
             let insertId: number = newId.insertId;
             await postBlogTag(insertId);
+
+            setModalDisplay(true);
+            setModalMessage("New Blog Posted!");
+            setModalBtns({ home: true, close: false, destroy: false });
         } catch (e) {
             console.log("Error Posting New Blog: " + e);
         }
@@ -94,6 +125,10 @@ const NewBlog = (props: NewBlogProps) => {
         console.log("The Blog Tag: " + theTag);
     }
 
+    const closeModal = () => {
+        setModalDisplay(false);
+    }
+
     useEffect(() => {
         fetchAllAuthors();
         fetchAllTags();
@@ -110,10 +145,10 @@ const NewBlog = (props: NewBlogProps) => {
                             <option key={author.id} value={author.id}>{author.name}</option>
                         ))}
                     </select>
-                    <label className="sr-only">Blog Title</label><input type="text" className="full-width" placeholder={theTitle} onChange={handleTitleChange}></input>
+                    <label className="sr-only">Blog Title</label><input type="text" className="full-width" placeholder="Blog Title" onChange={handleTitleChange}></input>
                 </div>
                 <div className="p-3 full-width">
-                    <label className="sr-only">Blog Content</label><textarea placeholder={theBlog} onChange={handleBlogChange}></textarea>
+                    <label className="sr-only">Blog Content</label><textarea placeholder="Blog Content" onChange={handleBlogChange}></textarea>
                 </div>
                 <div className="d-flex justify-content-around justify-content-center full-width">
                     <select id="tags" onChange={handleTagChange} value={theTag} className="width-50">
@@ -123,10 +158,11 @@ const NewBlog = (props: NewBlogProps) => {
                         ))}
                     </select>
 
-                    <button onClick={postNewBlog}>Post Blog</button>
+                    <button onClick={verify}>Post Blog</button>
                     <Link to="/"><button>Cancel</button></Link>
                 </div>
             </div>
+            <Modal display={modalDisplay} btns={modalBtns} displayFunction={closeModal}>{modalMessage}</Modal>
         </>
     );
 };

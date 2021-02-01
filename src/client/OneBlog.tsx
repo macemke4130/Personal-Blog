@@ -17,7 +17,6 @@ const OneBlog = (props: OneBlogProps) => {
         try {
             let r = await fetch("/api/blogs/readonly/" + id);
             let thisBlogJson = await r.json();
-            console.log(thisBlogJson[0]);
 
             // Populates the Inputs with the default values --
             setTheAuthor(thisBlogJson[0].writer);

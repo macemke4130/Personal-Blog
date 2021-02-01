@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Moment from 'react-moment';
 
 const AllBlogs = (props: AllBlogsProps) => {
-    const [greeting, setGreeting] = useState<string>('All Blogs');
+    const [greeting, setGreeting] = useState<string>("Wow, what a cool real blog!");
     const [allBlogs, setAllBlogs] = useState<Array<B>>([]);
 
     const fetchAllBlogs = async () => {
