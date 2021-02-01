@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useParams, Link, useHistory } from 'react-router-dom';
 import { useState, useEffect } from "react";
-import Moment from 'react-moment';
 
 const Admin = (props: AdminProps) => {
     const { id } = useParams<{ id: string }>();

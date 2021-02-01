@@ -11,6 +11,7 @@ const destroyBlog = async (id: number) => Query("Delete from blogs where id = ?"
 const theTag = async (id: number) => Query("Select tagid from blogtags where blogid = ?", [id]);
 const updateBlog = async (id: number, authorid: number, title: string, content: string) => Query("Update blogs set authorid = ?, title = ?, content = ? where id = ?", [authorid, title, content, id]);
 const updateBlogTag = async (id: number, tagId: number) => Query("Update blogtags set tagid = ? where blogid = ?", [tagId, id]);
+const readOnly = async (id: number) => Query("call readOnly(?)", [id]);
 
 export default {
     all,
@@ -23,5 +24,6 @@ export default {
     destroyBlog,
     theTag,
     updateBlog,
-    updateBlogTag
+    updateBlogTag,
+    readOnly
 }

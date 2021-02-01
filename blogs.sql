@@ -51,3 +51,41 @@ create table blogtags (
 select * from blogtags;
 
 select blogs.id, blogs.title, blogs.content, blogs._created, blogs._updated, authors.name as writer from blogs inner join authors on blogs.authorid = authors.id where blogs.id = 8;
+
+drop procedure singleBlog;
+delimiter //
+create procedure singleBlog (in id int)
+begin
+	select @blogtag := tagid from blogtags where blogid = id;
+    select blogs.id, blogs.title, blogs.content, blogs._created, blogs._updated, authors.name as writer, tags.name as tagname from blogs
+    join tags on @blogtag = tags.id
+    inner join authors on blogs.authorid = authors.id where blogs.id = id;
+end //
+delimiter ;
+
+call singleBlog(8);
+
+drop procedure readOnly;
+delimiter //
+create procedure readOnly (in x int)
+begin
+SELECT 
+    blogs.*,
+    GROUP_CONCAT(tags.name
+        SEPARATOR ';;') AS tags,
+	GROUP_CONCAT(authors.name
+		SEPARATOR ';;') AS writer
+FROM
+    blogs
+        JOIN
+    blogtags ON blogtags.blogid = blogs.id
+        JOIN
+    tags ON tags.id = blogtags.tagid
+		JOIN
+	authors ON authors.id = blogs.authorid
+		
+GROUP BY blogs.id having blogs.id = x;
+end //
+delimiter ;
+
+call readOnly(8);

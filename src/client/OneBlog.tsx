@@ -15,35 +15,24 @@ const OneBlog = (props: OneBlogProps) => {
 
     const fetchThisBlog = async () => {
         try {
-            let r = await fetch("/api/blogs/" + id);
+            let r = await fetch("/api/blogs/readonly/" + id);
             let thisBlogJson = await r.json();
+            console.log(thisBlogJson[0]);
 
             // Populates the Inputs with the default values --
-            setTheAuthor(thisBlogJson.writer);
-            setTheTitle(thisBlogJson.title);
-            setTheBlog(thisBlogJson.content);
-            setTheCreatedTime(thisBlogJson._created);
-            setTheUpdatedTime(thisBlogJson._updated);
+            setTheAuthor(thisBlogJson[0].writer);
+            setTheTitle(thisBlogJson[0].title);
+            setTheBlog(thisBlogJson[0].content);
+            setTheCreatedTime(thisBlogJson[0]._created);
+            setTheUpdatedTime(thisBlogJson[0]._updated);
+            setTheTag(thisBlogJson[0].tags);
         } catch (e) {
             console.log("Error Fetching Single Blog: " + e);
         }
     }
 
-    const fetchThisTag = async () => {
-        try {
-            let r = await fetch("/api/blogtag/" + id);
-            let theTagJson = await r.json();
-            
-
-            setTheTag("");
-        } catch (e) {
-            console.log("Error Fetching This Tag: " + e);
-        }
-    }
-
     useEffect(() => {
         fetchThisBlog();
-        fetchThisTag();
     }, []);
 
     return (
@@ -51,8 +40,8 @@ const OneBlog = (props: OneBlogProps) => {
             <div className="container">
                 <h1>{theTitle}</h1>
                 <p>Written by {theAuthor}</p>
-                <p><small>Published </small>{<Moment format="MMMM DD, YYYY H:mm a">{theCreatedTime}</Moment>}</p>
-                {theCreatedTime != theUpdatedTime ? <p><small>Updated </small>{<Moment format="MMMM DD, YYYY H:mm a">{theUpdatedTime}</Moment>}</p> : ""}
+                <p><small>Published </small>{<Moment format="MMMM DD, YYYY H:mm">{theCreatedTime}</Moment>}</p>
+                {theCreatedTime != theUpdatedTime ? <p><small>Updated </small>{<Moment format="MMMM DD, YYYY H:mm">{theUpdatedTime}</Moment>}</p> : ""}
                 <p>{theBlog}</p>
                 <p>Filed under {theTag}</p>
                 <Link to="/"><button>Home</button></Link>

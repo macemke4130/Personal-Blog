@@ -32,7 +32,7 @@ const AllBlogs = (props: AllBlogsProps) => {
                             <Link to={"/blogpost/" + blog.id}><h2>{blog.title}</h2></Link>
                             <small>Written by: {blog.writer}</small>
                             <p>{blog.content}</p>
-                            <small>Published <Moment format="MMMM DD, YYYY H:mm a">{blog._created}</Moment></small>
+                            <small>Published <Moment format="MMMM DD, YYYY H:mm">{blog._created}</Moment></small>
                         </div>
                     </div>
                 ))}

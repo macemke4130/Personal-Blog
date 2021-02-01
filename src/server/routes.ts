@@ -40,11 +40,22 @@ router.post('/api/blogtags', async (req, res) => {
     }
 });
 
-// Get One Blog Post --
+// Get One Blog Post for Admin Page --
 router.get('/api/blogs/:id', async (req, res) => {
     let id: number = Number(req.params.id);
     try {
         res.json((await db.blogs.one(id))[0]);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+// Get One Blog Post for Read Only Page --
+router.get('/api/blogs/readonly/:id', async (req, res) => {
+    let id: number = Number(req.params.id);
+    try {
+        res.json((await db.blogs.readOnly(id))[0]);
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
