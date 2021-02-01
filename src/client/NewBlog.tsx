@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import Modal, { MB, ModalProps } from "./Modal";
 
-
 const NewBlog = (props: NewBlogProps) => {
     const [allAuthors, setAllAuthros] = useState<Array<A>>([]);
     const [allTags, setAllTags] = useState<Array<T>>([]);
@@ -116,13 +115,6 @@ const NewBlog = (props: NewBlogProps) => {
 
     const handleTagChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setTheTag(Number(e.target.value));
-    }
-
-    const showState = () => {
-        console.log("The Author: " + theAuthor);
-        console.log("The Title: " + theTitle);
-        console.log("The Blog Text: " + theBlog);
-        console.log("The Blog Tag: " + theTag);
     }
 
     const closeModal = () => {

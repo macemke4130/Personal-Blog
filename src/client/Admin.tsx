@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useParams, Link, useHistory } from 'react-router-dom';
 import { useState, useEffect } from "react";
+import Modal, { MB, ModalProps } from "./Modal";
 
 const Admin = (props: AdminProps) => {
     const { id } = useParams<{ id: string }>();
@@ -11,6 +12,10 @@ const Admin = (props: AdminProps) => {
     const [theTitle, setTheTitle] = useState<string>("");
     const [theBlog, setTheBlog] = useState<string>("");
     const [theTag, setTheTag] = useState<number>(0);
+
+    const [modalDisplay, setModalDisplay] = useState<boolean>(false);
+    const [modalMessage, setModalMessage] = useState<string>("");
+    const [modalBtns, setModalBtns] = useState<MB>({ close: true, home: false });
 
     const fetchThisBlog = async () => {
         try {
@@ -74,7 +79,9 @@ const Admin = (props: AdminProps) => {
             let r = await fetch("/api/blogs/update/" + id, myMethod)
                 .then((res) => {
                     if (res.ok) {
-                        console.log("Call Modal.");
+                        setModalDisplay(true);
+                        setModalMessage("Blog Updated!");
+                        setModalBtns({ home: true, close: false, destroy: false });
                     }
                 });
         } catch (e) {
@@ -99,16 +106,46 @@ const Admin = (props: AdminProps) => {
         }
     }
 
+    const verify = () => {
+        if (theAuthor === 0) {
+            setModalDisplay(true);
+            setModalMessage("Please select an Author.");
+            setModalBtns({ home: false, close: true, destroy: false });
+        } else if (theTitle === "" || theTitle === " ") {
+            setModalDisplay(true);
+            setModalMessage("Please enter a Title.");
+            setModalBtns({ home: false, close: true, destroy: false });
+        } else if (theBlog === "" || theBlog === " ") {
+            setModalDisplay(true);
+            setModalMessage("Please enter a Blog.");
+            setModalBtns({ home: false, close: true, destroy: false });
+        } else if (theTag === 0) {
+            setModalDisplay(true);
+            setModalMessage("Please select a tag.");
+            setModalBtns({ home: false, close: true, destroy: false });
+        } else {
+            submitEdit();
+        }
+    };
+
     const destroyBlogCatch = () => {
-        // Verifications here --
-        destroyBlogConfirm();
+        setModalDisplay(true);
+        setModalMessage("Are you sure you want to delete this blog entry?");
+        setModalBtns({ home: true, close: false, destroy: true });
     }
 
     const destroyBlogConfirm = async () => {
         try {
             let myMethod = { method: 'DELETE' };
             let r = await fetch("/api/blogs/delete/" + id, myMethod);
-            console.log("Deleted?");
+
+            setModalMessage("DELETED!");
+            setModalBtns({ home: true, close: false, destroy: false });
+
+            setTheTag(0);
+            setTheAuthor(0);
+            setTheTitle("DELETED!");
+            setTheBlog("DELETED!");
         } catch (e) {
             console.log("Error Destorying Blog: " + e);
         }
@@ -137,6 +174,10 @@ const Admin = (props: AdminProps) => {
         console.log("The Blog Tag: " + theTag);
     }
 
+    const closeModal = () => {
+        setModalDisplay(false);
+    }
+
     useEffect(() => {
         fetchThisBlog();
         fetchThisTag();
@@ -163,9 +204,10 @@ const Admin = (props: AdminProps) => {
                     ))}
                 </select>
                 <Link to="/"><button>Cancel Edit</button></Link>
-                <button onClick={submitEdit}>Submit Blog Edit</button>
+                <button onClick={verify}>Submit Blog Edit</button>
                 <button onClick={destroyBlogCatch}>Delete Blog</button>
             </div>
+            <Modal display={modalDisplay} btns={modalBtns} displayFunction={closeModal} destroyFunction={destroyBlogConfirm}>{modalMessage}</Modal>
         </>
     );
 };
