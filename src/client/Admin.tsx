@@ -167,13 +167,6 @@ const Admin = (props: AdminProps) => {
         setTheTag(Number(e.target.value));
     }
 
-    const showState = () => {
-        console.log("The Author: " + theAuthor);
-        console.log("The Title: " + theTitle);
-        console.log("The Blog Text: " + theBlog);
-        console.log("The Blog Tag: " + theTag);
-    }
-
     const closeModal = () => {
         setModalDisplay(false);
     }

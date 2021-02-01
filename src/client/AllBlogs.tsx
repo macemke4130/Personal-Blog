@@ -2,10 +2,9 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import Moment from 'react-moment';
-import { isArrowFunction } from 'typescript';
 
 const AllBlogs = (props: AllBlogsProps) => {
-    const [greeting, setGreeting] = useState<string>("Wow! Blogs!");
+    const [greeting, setGreeting] = useState<string>("Cool Blogs Dot Com");
     const [allBlogs, setAllBlogs] = useState<Array<B>>([]);
     const [empty, setEmpty] = useState<boolean>(false);
 

@@ -1,6 +1,7 @@
 import * as mysql from 'mysql';
 import blogs from './blogs';
 
+// I know this shouldn't be here. I'm being lazy -- 
 export const Connection = mysql.createConnection({
     host: 'localhost',
     port: 3306,

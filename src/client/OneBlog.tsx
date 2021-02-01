@@ -39,8 +39,8 @@ const OneBlog = (props: OneBlogProps) => {
             <div className="container">
                 <h1>{theTitle}</h1>
                 <p>Written by {theAuthor}</p>
-                <p><small>Published </small>{<Moment format="MMMM DD, YYYY H:mm">{theCreatedTime}</Moment>}</p>
-                {theCreatedTime != theUpdatedTime ? <p><small>Updated </small>{<Moment format="MMMM DD, YYYY H:mm">{theUpdatedTime}</Moment>}</p> : ""}
+                <p><small>Published </small>{theCreatedTime ? <Moment format="MMMM DD, YYYY H:mm">{theCreatedTime}</Moment> : ""}</p>
+                {theCreatedTime === theUpdatedTime ? "" : <p><small>Updated </small>{<Moment format="MMMM DD, YYYY H:mm">{theUpdatedTime}</Moment>}</p>}
                 <p>{theBlog}</p>
                 <p>Filed under {theTag}</p>
                 <Link to="/"><button>Home</button></Link>
